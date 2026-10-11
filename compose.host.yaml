@@ -1,0 +1,22 @@
+services:
+  remote:
+    build: .
+    image: philips-remote:local
+    restart: unless-stopped
+    init: true
+    network_mode: host
+    environment:
+      PORT: "${WEB_PORT:-3000}"
+      TV_SUBNETS: "${TV_SUBNETS:-}"
+      DATA_DIR: /app/data
+    volumes:
+      - tv-data:/app/data
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+volumes:
+  tv-data:
